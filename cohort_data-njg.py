@@ -1,3 +1,18 @@
+# def student_info(filename):
+# 	all_students = []
+#     all_advisors = []
+#     all_houses = []
+# 	tas = []
+
+# 	open_file = open(filename)
+# 	for line in open_file:
+# 		firstname, lastname, house, advisor, term = line.rstrip().split("|")
+# 		# print firstname -- test
+
+# 	return
+
+	
+
 def unique_houses(filename):
     """TODO: Create a set of student houses.
     Iterates over the cohort_data.txt file to look for all of the included house names
@@ -35,28 +50,77 @@ def unique_houses(filename):
     return houses # returns my complete set of houses now!
      
 
-print unique_houses("cohort_data-njg.txt")
+# test passed -- print unique_houses("cohort_data-njg.txt")
 
-# def sort_by_cohort(filename):
-#     """TODO: Sort students by cohort.
+def sort_by_cohort(filename):
+    """TODO: Sort students by cohort.
 
-#     Iterates over the data to create a list for each cohort, ordering students
-#     alphabetically by first name and tas separately. Returns list of lists.
+    Iterates over the data to create a list for each cohort, ordering students
+    alphabetically by first name and tas separately. Returns list of lists.
 
-#         ex. winter_15 = ["alice tsao", "amanda gilmore", "anne vetto", "..." ]
-#         ex. all_students = [winter_15, spring_15, tas]
+        ex. winter_15 = ["alice tsao", "amanda gilmore", "anne vetto", "..." ]
+        ex. all_students = [winter_15, spring_15, tas]
     
-#     """
+    """
+    # if term = '', add firstname + lastname to tas list
+    # if term = "Winter 2015", add firstname + lastname to winter_15 list
 
-#     all_students = []
-#     winter_15 = []
-#     spring_15 = []
-#     tas = []
+    all_students = [] # this will be the master list of lists
+    all_terms = set() # I do not want duplicate values here so I created a set
+    winter_15 = []
+    spring_15 = []
+    tas = []
 
-#     # Code goes here
+    # Code goes here
+    open_file = open(filename) # opening the file
+    for line in open_file: 
+        firstname, lastname, house, advisor, term = line.rstrip().split("|")
+    	# must be way to insert a function for this since we do it over an over!
+    	# confused on how to do that when there is a for loop involved
+    	# for example, a function with for loop will only return last values
+    	# unless I create a list to store all variables in
+    	full_name = firstname + " " + lastname # format/create full_name str
+    	# need this for all so kept in first for loop block here
+    	# each time through I can test the term's name to divide up the lists
+    	if advisor not in tas:
+    		tas.append(advisor) # another way to make sure there are no duplicates!
+    		# this way I did not have to create a set and then change it back to a list
 
-#     return all_students
+    	# this is an entirely separete if block just for terms	
+    	if term == "Winter 2015":
+    		winter_15.append(full_name)
+    	
+    	elif term == "Spring 2015":
+    		spring_15.append(full_name)
 
+    	# all_students.append(full_name) # append name to student list
+    	# tas.append(advisor) # append advisor name to ta list
+    	# I tried this first: all_students = all_students.append(full_name) but that gave me an error message
+    	# need to ask why...I think it is because append works in place. 
+    	# soo...rebinding while changing the list in place makes no sense!
+    	
+    # revise/reformat lists
+    tas.sort()
+    winter_15.sort()
+    spring_15.sort()
+
+    # easier than using if statements...just remove the values I know I don't want 
+    tas.remove("Joel")
+    tas.remove("Cynthia")
+    tas.remove("")
+    
+    # add to all_students list:
+    # extend works with .extend([list])
+    # append works with .append(list)
+    # must be a way to utilize extend with mulitple lists...
+    all_students = [winter_15] + [spring_15] + [tas]
+    # ok...I'm going with rebinding all_students to some list arithmetic [] + [] + []
+    # there are lots of fancy methods but this is simple, clean, and one line! 
+
+    return all_students
+
+# call function to test syntax after copy & paste
+sort_by_cohort("cohort_data-njg.txt")
 
 # def students_by_house(filename):
 #     """TODO: Sort students by house.
